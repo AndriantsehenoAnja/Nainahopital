@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         version="5.0">
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value><!-- applicationContext.xml exactement mais avec le lien vers ce fichier -->
+    </context-param>
+
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>core.DispatcherServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>20971520</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+        <!-- <init-param>
+            <param-name>controller</param-name>
+            <param-value>mg.itu.controller</param-value>
+        </init-param> -->
+    </servlet>
+    <context-param>
+        <param-name>controller</param-name>
+        <param-value>controller</param-value>
+    </context-param>
+    <context-param>
+        <param-name>pathSource</param-name>
+        <param-value>/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>extension</param-name>
+        <param-value>.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>auth</param-name>
+        <param-value>login</param-value>
+    </context-param>
+    <context-param>
+        <param-name>role</param-name>
+        <param-value>role</param-value>
+    </context-param>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
