@@ -11,17 +11,20 @@ import mg.etu4370.annotation.AnjaParameter;
 import mg.etu4370.annotation.ApiRest;
 import mg.etu4370.annotation.UrlMapping;
 import mg.etu4370.utils.ModelAndView;
+import mg.etu4370.annotation.AnjaAuth;
 
 @Controller
 public class PatientController {
 
     @Inject
-    private PatientService patientService;
+    private static PatientService patientService;
 
+    @AnjaAuth(value={"ADMIN","USER"})
     @UrlMapping(value = "/patients", method = "GET")
     public ModelAndView liste() {
         return listeAvecErreur(null);
     }
+
 
     @ApiRest 
     @UrlMapping (value = "/Allpatients",method = "GET")
@@ -29,17 +32,20 @@ public class PatientController {
         return patientService.findAll();
     }
 
+
     @ApiRest 
     @UrlMapping (value = "/patient",method = "GET") 
     public Patient findByIdPatient(@AnjaParameter(name="id") Integer id){
         return patientService.findById(id);
     }
 
+    @AnjaAuth(value={"ADMIN"})
     @UrlMapping(value = "/patients/new", method = "GET")
     public ModelAndView nouveau() {
         return formulaire(new Patient(), null);
     }
 
+    @AnjaAuth(value={"ADMIN"})
     @UrlMapping(value = "/patients/edit", method = "GET")
     public ModelAndView modifier(@AnjaParameter(name="id") Integer id) {
         Patient patient = patientService.findById(id);
@@ -61,6 +67,7 @@ public class PatientController {
         return mv;
     }
 
+    @AnjaAuth(value={"ADMIN"})
     @UrlMapping(value = "/patients/save", method = "POST")
     public ModelAndView enregistrer(@AnjaParameter(name="patient") Patient patient) throws IOException {
         try {
@@ -71,6 +78,7 @@ public class PatientController {
         return listeAvecErreur(null);
     }
 
+    @AnjaAuth(value={"ADMIN"})
     @UrlMapping(value = "/patients/delete", method = "POST")
     public ModelAndView supprimer(@AnjaParameter(name="id") Integer id) throws IOException {
 
@@ -78,7 +86,7 @@ public class PatientController {
         return listeAvecErreur(null);
     }
 
-    private ModelAndView listeAvecErreur(String erreur) {
+    public static ModelAndView listeAvecErreur(String erreur) {
         ModelAndView mv = new ModelAndView("views/patient/list");
         mv.addAttribut("patients", patientService.findAll());
         if (erreur != null) mv.addAttribut("erreur", erreur);
