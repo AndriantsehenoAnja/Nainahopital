@@ -1,1 +1,4 @@
-build
+frameWork/build
+php/tests
+php/writable
+php/system/*
